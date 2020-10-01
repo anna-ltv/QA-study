@@ -10,7 +10,7 @@ def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
     assert status == 200
     assert 'key' in result
 
-def test_get_api_key_for_unvalid_user(email=unvalid_email, password=unvalid_password):
+def test_get_api_key_for_invalid_user(email=unvalid_email, password=unvalid_password):
     # Проверяем вход при невалидных данных email и пароль, статус запроса не должен быть 200
     status, result = pf.get_api_key(email, password)
     assert status != 200
@@ -65,7 +65,7 @@ def test_add_new_pet_with_valid_data(name='Stich', animal_type = 'alien', age = 
     assert result['age'] == age
     assert 'jpg' or 'jpeg' in result['pet_photo']
 
-def test_add_new_pet_with_unvalid_data(name='%%%$$', animal_type = '???', age = '<>>'):
+def test_add_new_pet_with_invalid_data(name='%%%$$', animal_type = '???', age = '<>>'):
     #проверяем добавление питомца с некорректными данными
     #Получаем ключ auth_key
     _, auth_key = pf.get_api_key(valid_email, valid_password)
