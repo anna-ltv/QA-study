@@ -6,7 +6,6 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 class PetFriends:
     def __init__(self):
         self.base_url = 'https://petfriends1.herokuapp.com/'
-    #тесты по модулю из скринкаста
 
     def get_api_key(self, email, password):
 
@@ -39,12 +38,29 @@ class PetFriends:
 
     #POST, PUT, DELETE тесты - самостоятельная работа
 
-    def add_information_about_new_pet_without_photo(self, auth_key, name, animal_type, age):
+    def add_information_about_new_pet_without_photo(self, auth_key, name, animal_type, age, pet_photo):
         """Запрос на добавление нового питомца без фото, основные параметры имя питомца, вид и возвраст"""
         headers = {'auth_key': auth_key['key']}
-        data = {'name': name, 'animal_type': animal_type, 'age': age}
+        data = {'name': name, 'animal_type': animal_type, 'age': age, 'pet_photo': pet_photo}
 
         res = requests.post(self.base_url + 'api/create_pet_simple', headers=headers, data=data)
+        status = res.status_code
+        result = ''
+        try:
+            result = res.json()
+        except:
+            result = res.text
+        return status, result
+
+    def add_pet_only_with_photo(self, auth_key, name, animal_type, age, pet_photo):
+        """Метод отправляем запрос на добавления только фотографии для нового питомца с пустыми данными имени, вида
+        и возраста"""
+
+        data = MultipartEncoder({'name': name, 'animal_type': animal_type, 'age': age,
+                                 'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpg')})
+        headers = {'auth_key': auth_key['key'], 'Content-Type': data.content_type}
+        res = requests.post(self.base_url + 'api/pets', headers=headers, data=data)
+
         status = res.status_code
         result = ''
         try:
@@ -116,5 +132,4 @@ class PetFriends:
         except json.decoder.JSONDecodeError:
             result = res.text
         return status, result
-
 
