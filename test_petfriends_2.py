@@ -12,9 +12,9 @@ def testing():
 
 def test_show_my_pets():
     # enter email
-    pytest.driver.find_element_by_id('email').send_keys('test.qap@yandex.ru')
+    pytest.driver.find_element_by_id('email').send_keys('test.mail')
     # enter password
-    pytest.driver.find_element_by_id('pass').send_keys('123cd-123')
+    pytest.driver.find_element_by_id('pass').send_keys('123')
     # press the button
     pytest.driver.find_element_by_css_selector('button[type="submit"]').click()
     # проверяем, что мы оказались на главной странице пользователя
